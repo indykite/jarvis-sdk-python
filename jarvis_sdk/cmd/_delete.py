@@ -1,8 +1,8 @@
 import uuid
 
 from jarvis_sdk.cmd import helper
-from jarvis_sdk.indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
-from jarvis_sdk.indykite.identity.v1beta1 import model_pb2 as model
+from indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
+from indykite.identity.v1beta1 import model_pb2 as model
 
 
 def del_digital_twin(self, digital_twin_id, tenant_id):

@@ -3,7 +3,7 @@ import grpc
 import os
 
 from jarvis_sdk.cmd import helper
-from jarvis_sdk.indykite.identity.v1beta1 import identity_management_api_pb2_grpc as pb2_grpc
+from indykite.identity.v1beta1 import identity_management_api_pb2_grpc as pb2_grpc
 
 
 class IdentityClient(object):

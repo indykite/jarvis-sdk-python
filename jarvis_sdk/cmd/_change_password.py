@@ -1,7 +1,7 @@
 import uuid
 
-from jarvis_sdk.indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
-from jarvis_sdk.indykite.identity.v1beta1 import model_pb2 as model
+from indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
+from indykite.identity.v1beta1 import model_pb2 as model
 
 
 def change_password(self, token, new_password):

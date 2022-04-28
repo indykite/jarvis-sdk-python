@@ -1,4 +1,4 @@
-from jarvis_sdk.indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
+from indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
 
 
 def introspect_token(self, user_token):

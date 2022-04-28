@@ -8,7 +8,6 @@ long_description = (
     open('CHANGELOG.md', encoding="utf8").read()
     + '\n')
 
-
 setuptools.setup(
     name='jarvis-sdk-python',
     url='https://github.com/indykite/jarvis-sdk-python',
@@ -18,7 +17,12 @@ setuptools.setup(
     description='A python SDK package for Indykite\'s jarvis system (with protobuf)',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(where="proto") + setuptools.find_packages(),
+    package_dir={
+        "indykite": "proto/indykite",
+        "validate": "proto/validate",
+        "jarvis_sdk.cmd": "jarvis_sdk/cmd",
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",

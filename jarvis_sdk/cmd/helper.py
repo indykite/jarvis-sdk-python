@@ -5,8 +5,8 @@ import uuid
 from authlib.jose import JsonWebKey, jwt
 from datetime import datetime, timedelta, timezone
 
-from jarvis_sdk.indykite.identity.v1beta1 import attributes_pb2 as attributes
-from jarvis_sdk.indykite.objects.v1beta1 import struct_pb2 as objects
+from indykite.identity.v1beta1 import attributes_pb2 as attributes
+from indykite.objects.v1beta1 import struct_pb2 as objects
 
 
 def load_credentials(path):
