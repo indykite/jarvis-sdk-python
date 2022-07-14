@@ -1,6 +1,7 @@
 import pytest
 
 from jarvis_sdk.cmd import IdentityClient
+from jarvis_sdk.model.digital_twin import DigitalTwinCore
 from tests.helpers import data
 
 def test_del_digital_twin_wrong_twin_id(capsys):
@@ -72,13 +73,13 @@ def test_del_digital_twin_by_token_expired_token(capsys):
     assert response is None
 
 
-# TODO
-#  def test_del_digital_twin_by_token(registration):
-#      token = registration[0]
+def test_del_digital_twin_by_token_success(registration):
+    token = registration[0]
 
-#      client = IdentityClient()
-#      assert client is not None
+    client = IdentityClient()
+    assert client is not None
 
-#      response = client.del_digital_twin_by_token(token)
+    response = client.del_digital_twin_by_token(token)
+    assert isinstance(response, DigitalTwinCore)
 
 
