@@ -1,7 +1,9 @@
 import pytest
 
 from jarvis_sdk.cmd import IdentityClient
+from jarvis_sdk.indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
 from tests.helpers import data
+from unittest.mock import patch
 
 def test_change_password_short_token(capsys):
     token = "short_token"
@@ -85,3 +87,22 @@ def test_password_of_user_nonexisting_twin_id(capsys):
 
     assert "digital_twin was not found" in captured.out
     assert response is None
+
+
+def test_password_of_user_success(capsys):
+    digital_twin_id = "e1e9f07d-fc6e-4629-84d1-8d23836524ba"
+    tenant_id = data.get_tenant()
+    password = data.get_new_password()
+
+    with patch("jarvis_sdk.cmd.IdentityClient") as client:
+        client.stub.ChangePassword.return_value = pb2.ChangePasswordResponse()
+        response = client.change_password_of_user(digital_twin_id, tenant_id, password)
+
+        captured = capsys.readouterr()
+        assert captured.out is "The password has been changed successfully"
+        assert response is not None
+
+    #  IdentityClient = Mock()
+    #  IdentityClient.stub.ChangePassword.return_value = pb2.ChangePasswordResponse()
+    #  response = IdentityClient.change_password_of_user(digital_twin_id, tenant_id, password)
+
