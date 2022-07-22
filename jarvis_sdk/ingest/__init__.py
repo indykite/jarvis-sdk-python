@@ -3,10 +3,11 @@ import grpc
 import os
 
 from jarvis_sdk.cmd import helper
-from jarvis_sdk.indykite.identity.v1beta1 import identity_management_api_pb2_grpc as pb2_grpc
+from jarvis_sdk.indykite.ingest.v1beta1 import ingest_api_pb2 as pb2
+from jarvis_sdk.indykite.ingest.v1beta1 import ingest_api_pb2_grpc as pb2_grpc
+from typing import Iterator
 
-
-class IdentityClient(object):
+class IngestClient(object):
 
     def __init__(self, local=False):
         cred = os.getenv('INDYKITE_APPLICATION_CREDENTIALS')
@@ -38,20 +39,39 @@ class IdentityClient(object):
             certificate_path = certifi.where()
             endpoint = credentials.get("endpoint")
 
+
         with open(certificate_path, "rb") as cert_file:
             channel_credentials = grpc.ssl_channel_credentials(cert_file.read())
 
         composite_credentials = grpc.composite_channel_credentials(channel_credentials,
                                                                    call_credentials)
-
         self.channel = grpc.secure_channel(endpoint, composite_credentials)
-        self.stub = pb2_grpc.IdentityManagementAPIStub(channel=self.channel)
+        self.stub = pb2_grpc.IngestAPIStub(channel=self.channel)
 
-    # Imported methods
-    from ._change_password import change_password_of_user, change_password
-    from ._get_digital_twin import get_digital_twin_by_token, get_digital_twin
-    from ._introspect_token import introspect_token
-    from ._patch_properties import patch_properties_by_token, patch_properties
-    from ._verification import start_digital_twin_email_verification, verify_digital_twin_email
-    from ._delete import del_digital_twin, del_digital_twin_by_token
-    from ._enrich_token import enrich_token
+
+    def generate_records_request(self, config_id, records):
+        """ Create iterator for record requests. """
+        for record in records:
+            record_request = pb2.StreamRecordsRequest(mapping_config_id=config_id, record=record)
+            yield record_request
+
+
+    def read_stream_response(self, response_iterator: Iterator[pb2.StreamRecordsResponse]):
+        try:
+            for response in response_iterator:
+                print(response)
+        except Exception as exception:
+            print(exception)
+            return None
+
+
+    def stream_records(self, config_id, records):
+
+        # Do we need to validate the input data?
+
+        record_iterator = self.generate_records_request(config_id, records)
+
+        response_iterator = self.stub.StreamRecords(record_iterator)
+
+        # Return iterator or callback function ??
+        return response_iterator
